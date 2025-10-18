@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_buddy/Exercisepage.dart';
 import 'package:gym_buddy/data/data.dart';
 
 class Homepage extends StatefulWidget {
@@ -38,13 +39,15 @@ class _HomepageState extends State<Homepage> {
               children: [
                 Text('Select the date:'),
                 TextButton(onPressed: _pickDate, child: Text(selectedDate.toLocal().toString().split(' ')[0])),
-                // Date picker widget can be added here
               ],
             ),
             Expanded(
               child: ListView.builder(itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(filteredExercisesByDate(selectedDate)[index].name),
+                return GestureDetector(
+                   child:Row(
+                  children:[ Text(filteredExercisesByDate(selectedDate)[index].name) ]
+                ),
+                onTap: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=> Exercisepage())),
                 );
               }, itemCount: filteredExercisesByDate(selectedDate).length),
             )
