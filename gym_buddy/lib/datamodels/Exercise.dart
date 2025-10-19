@@ -1,8 +1,13 @@
+import 'package:gym_buddy/data/data.dart';
 import 'package:gym_buddy/datamodels/ExerciseSet.dart';
 
 class Exercise {
-  DateTime? date;
-  String name;
+  late int id;
+  late String name;
   List<Exerciseset>? sets;
-  Exercise(this.name,this.date);
+  Exercise(name, id) {
+    this.name = name;
+    this.id = id;
+    sets = [];
+  }
 }

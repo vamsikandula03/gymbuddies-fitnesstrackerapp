@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_buddy/Exercisepage.dart';
 import 'package:gym_buddy/data/data.dart';
+import 'package:gym_buddy/datamodels/Exercise.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -19,9 +20,8 @@ class _HomepageState extends State<Homepage> {
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
-         selectedDate = picked;
+        selectedDate = picked;
       });
-     
     }
   }
 
@@ -38,18 +38,67 @@ class _HomepageState extends State<Homepage> {
             Row(
               children: [
                 Text('Select the date:'),
-                TextButton(onPressed: _pickDate, child: Text(selectedDate.toLocal().toString().split(' ')[0])),
+                TextButton(
+                    onPressed: _pickDate,
+                    child:
+                        Text(selectedDate.toLocal().toString().split(' ')[0])),
               ],
             ),
-            Expanded(
-              child: ListView.builder(itemBuilder: (context, index) {
-                return GestureDetector(
-                   child:Row(
-                  children:[ Text(filteredExercisesByDate(selectedDate)[index].name) ]
-                ),
-                onTap: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=> Exercisepage())),
+            ElevatedButton(onPressed: () => {
+              showDialog(context: context, builder: (context) {
+                String? selectedExercise;
+                return AlertDialog(
+                  title: Text('Add Exercise'),
+                  content: DropdownButton<String>(
+                    hint: Text('Select Exercise'),
+                    value: selectedExercise,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedExercise = newValue;
+                      });
+                    },
+                    items: Exercises.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        if (selectedExercise != null) {
+                          setState(() {
+                            filteredExercisesByDate(selectedDate)
+                                .exercises
+                                .add(Exercise(selectedExercise!, 1));
+                          });
+                        }
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Add'),
+                    ),
+                  ],
                 );
-              }, itemCount: filteredExercisesByDate(selectedDate).length),
+              })
+            }, child: Text('Add Exercise')),
+            Expanded(
+              child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      child: Row(children: [
+                        Text(filteredExercisesByDate(selectedDate)
+                            .exercises[index]
+                            .name!)
+                      ]),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Exercisepage(date: selectedDate, exerciseIndex: index))),
+                    );
+                  },
+                  itemCount:
+                      filteredExercisesByDate(selectedDate).exercises?.length),
             )
           ],
         ),
