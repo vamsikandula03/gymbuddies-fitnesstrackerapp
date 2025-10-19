@@ -34,7 +34,7 @@ class _HomepageState extends State<Homepage> {
         ),
         body: Column(
           children: [
-            Text('Welcome to Gym Buddy!'),
+            Text('Welcome  $username'),
             Row(
               children: [
                 Text('Select the date:'),
@@ -44,58 +44,87 @@ class _HomepageState extends State<Homepage> {
                         Text(selectedDate.toLocal().toString().split(' ')[0])),
               ],
             ),
-            ElevatedButton(onPressed: () => {
-              showDialog(context: context, builder: (context) {
-                String? selectedExercise;
-                return AlertDialog(
-                  title: Text('Add Exercise'),
-                  content: DropdownButton<String>(
-                    hint: Text('Select Exercise'),
-                    value: selectedExercise,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedExercise = newValue;
-                      });
+            ElevatedButton(
+                onPressed: () => {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            String? selectedExercise;
+                            return AlertDialog(
+                              title: Text('Add Exercise'),
+                              content: DropdownButton<String>(
+                                hint: Text('Select Exercise'),
+                                value: selectedExercise,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedExercise = newValue;
+                                  });
+                                },
+                                items: Exercises.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    if (selectedExercise != null) {
+                                      setState(() {
+                                        filteredExercisesByDate(selectedDate)
+                                            .exercises
+                                            .add(
+                                                Exercise(selectedExercise!, 1));
+                                      });
+                                    }
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Add'),
+                                ),
+                              ],
+                            );
+                          })
                     },
-                    items: Exercises.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        if (selectedExercise != null) {
-                          setState(() {
-                            filteredExercisesByDate(selectedDate)
-                                .exercises
-                                .add(Exercise(selectedExercise!, 1));
-                          });
-                        }
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Add'),
-                    ),
-                  ],
-                );
-              })
-            }, child: Text('Add Exercise')),
+                child: Text('Add Exercise')),
             Expanded(
               child: ListView.builder(
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      child: Row(children: [
-                        Text(filteredExercisesByDate(selectedDate)
-                            .exercises[index]
-                            .name!)
-                      ]),
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Exercisepage(date: selectedDate, exerciseIndex: index))),
-                    );
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+
+color: Colors.grey[300],
+
+                                  borderRadius: BorderRadius.circular(10),
+                                  
+                                  ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                      GestureDetector(
+                        child: Row(children: [
+                          Text(filteredExercisesByDate(selectedDate)
+                              .exercises[index]
+                              .name!)
+                        ]),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Exercisepage(
+                                    date: selectedDate, exerciseIndex: index))),
+                      ),
+                      IconButton(onPressed: () => {
+                            setState(() {
+                              filteredExercisesByDate(selectedDate)
+                                  .exercises
+                                  .removeAt(index);
+                            })
+
+                      }, icon: Icon(Icons.delete))
+                    ]));
                   },
                   itemCount:
                       filteredExercisesByDate(selectedDate).exercises?.length),
