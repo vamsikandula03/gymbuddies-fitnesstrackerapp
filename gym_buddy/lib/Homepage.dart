@@ -30,7 +30,7 @@ class _HomepageState extends State<Homepage> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Gym Buddy'),
+          title: Text('Gym Buddies'),
         ),
         body: Column(
           children: [
