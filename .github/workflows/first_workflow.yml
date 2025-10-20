@@ -4,32 +4,34 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
-      - name: Checkout main branch
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0' 
+          flutter-version: '3.24.0' # or your local version
 
-      - name: Get dependencies
+      - name: Get Flutter dependencies
+        working-directory: gym_buddy
         run: flutter pub get
 
-      - name: Build web release
+      - name: Build Flutter web release
+        working-directory: gym_buddy
         run: flutter build web --release
 
       - name: Deploy to web-hosted branch
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: web-hosted
-          folder: build/web
+          folder: gym_buddy/build/web
           clean: true
