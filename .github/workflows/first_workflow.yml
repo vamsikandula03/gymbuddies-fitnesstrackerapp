@@ -27,7 +27,7 @@ jobs:
 
       - name: Build Flutter web release
         working-directory: gym_buddy
-        run: flutter build web --release
+        run: flutter build web --release --base-href "/gymbuddies-fitnesstrackerapp/"
 
       - name: Deploy to web-hosted branch
         uses: JamesIves/github-pages-deploy-action@v4
