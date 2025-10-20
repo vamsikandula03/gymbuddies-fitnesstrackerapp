@@ -74492,7 +74492,7 @@ case 2:o=b
 if(o!=null&&!o.j(0,q.d))q.ag(new A.ac9(q,o))
 return A.R(null,r)}})
 return A.S($async$uO,r)},
-H(a){var s=this,r=null,q=A.am3(A.bK("Gym Buddy",r,r,r,r,r,r)),p=A.bK("Welcome  Vamsi",r,r,r,r,r,r),o=t.p,n=A.ij(A.b([A.bK("Select the date:",r,r,r,r,r,r),A.o8(A.bK(s.d.xV().k(0).split(" ")[0],r,r,r,r,r,r),s.ga69(),r)],o),B.a_,B.T,B.ar),m=A.aj9(A.bK("Add Exercise",r,r,r,r,r,r),new A.ack(s,a)),l=A.Sq(s.d).b
+H(a){var s=this,r=null,q=A.am3(A.bK("Gym Buddies",r,r,r,r,r,r)),p=A.bK("Welcome  Vamsi",r,r,r,r,r,r),o=t.p,n=A.ij(A.b([A.bK("Select the date:",r,r,r,r,r,r),A.o8(A.bK(s.d.xV().k(0).split(" ")[0],r,r,r,r,r,r),s.ga69(),r)],o),B.a_,B.T,B.ar),m=A.aj9(A.bK("Add Exercise",r,r,r,r,r,r),new A.ack(s,a)),l=A.Sq(s.d).b
 l===$&&A.a()
 l=l.length
 return A.ao3(A.ap4(q,A.eT(A.b([p,n,m,A.kF(A.anY(new A.acl(s),l),1)],o),B.a_,B.T,B.ar)))}}
