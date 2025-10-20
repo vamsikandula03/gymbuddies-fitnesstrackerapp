@@ -1,8 +1,35 @@
-name: Hello_bot
-on: workflow_dispatch
+name: Build and Deploy Flutter Web
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Say Hello
-        run: echo "Hello, World!"
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0' 
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build web release
+        run: flutter build web --release
+
+      - name: Deploy to web-hosted branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: web-hosted
+          folder: build/web
+          clean: true
